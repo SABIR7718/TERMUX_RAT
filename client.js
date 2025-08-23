@@ -6,7 +6,7 @@ function getGlobalNodeModules() {
   return execSync("npm root -g").toString().trim();
 }
 
-// Try to require ws locally first, then globally, else install globally
+// Try t0 require ws locally first, then globally, else install globally
 let WebSocket;
 try {
   WebSocket = require("ws"); // local
