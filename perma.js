@@ -54,7 +54,7 @@ ws.on("message", (msg) => {
 
 ws.on("open", () => {
   ws.send(JSON.stringify({ type: "register_device", id: DEVICE_ID }));
-
+}
   
 
 /*
