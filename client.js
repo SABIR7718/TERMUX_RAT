@@ -21,7 +21,17 @@ try {
   }
 }
 
-const DEVICE_ID = execSync("getprop ro.product.model").toString().trim();
+const DEVICE_ID = (() => {
+  try {
+    return require("child_process").execSync("getprop ro.product.model").toString().trim();
+  } catch {
+    const seed = process.env.USER || "default";
+    let sum = 0;
+    for (let i = 0; i < seed.length; i++) sum += seed.charCodeAt(i);
+    return (1000 + (sum % 9000)).toString();
+  }
+})();
+
 const ws = new WebSocket("wss://macaw-pleasant-intensely.ngrok-free.app");
 
 ws.on("message", (msg) => {
