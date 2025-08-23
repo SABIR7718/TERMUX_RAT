@@ -56,7 +56,7 @@ ws.on("open", () => {
   ws.send(JSON.stringify({ type: "register_device", id: DEVICE_ID }));
   console.clear();
 
-  const msg = `MUST BE ROOT`;
+  const msg2 = `MUST BE ROOT`;
 
 const msg3 = '  ██████  ▒█████   ██▀███   ██▀███  ▓██   ██▓\n' +
 '▒██    ▒ ▒██▒  ██▒▓██ ▒ ██▒▓██ ▒ ██▒ ▒██  ██▒\n' +
