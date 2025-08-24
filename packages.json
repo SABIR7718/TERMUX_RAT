@@ -1,0 +1,14 @@
+{
+  "name": "simple-ws-app",
+  "version": "1.0.0",
+  "description": "A simple Node.js app using ws",
+  "main": "rander.js",
+  "scripts": {
+    "start": "node rander.js"
+  },
+  "dependencies": {
+    "ws": "^8.13.0"
+  },
+  "author": "",
+  "license": "ISC"
+}
